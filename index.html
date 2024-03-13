@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calci</title>
+  <link rel="stylesheet" href="C:/Users/ttbach/Desktop/conglui/congluiapp/dist/css/main.css">
+  <title>Cộng lùi</title>
   <style>
     table {
       background-color: brown;
@@ -12,7 +13,7 @@
       border-spacing: 10px;
       box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
       border-radius: 10px;
-      width: 297.2px;
+      width: 300px; /* Adjusted width */
       margin-top: 20px;
     }
 
@@ -37,9 +38,9 @@
     }
 
     #display {
-      width: 290px;
+      width: calc(100% - 20px); /* Adjusted width */
       height: 40px;
-      margin: 10px 0;
+      margin: 10px;
       box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
       border-radius: 10px;
     }
@@ -68,10 +69,12 @@
 </head>
 <body>
   <center>
-    <h1>Simple Calculator</h1>
+    <h1>Cộng lùi</h1>
     <table>
       <tr>
-        <input id="display">
+        <td colspan="5">
+          <input id="display" autofocus onkeypress="handleKeyPress(event)">
+        </td>
       </tr>
       <tr>
         <td> <button onclick="fun(1)">1</button></td>
@@ -105,17 +108,25 @@
   </center>
   <script>
     function fun(a) {
-      document.getElementById("display").value += a;
+     var display = document.getElementById("display");
+     if (!isNaN(a)) { // Check if the input is a number
+     display.value = ""; // Clear the input field before adding the new number
+     }
+     display.value += a;
     }
 
     function C() {
-      document.getElementById("display").value = "";
-    }
+  var display = document.getElementById("display");
+  display.value = "";
+  display.focus(); // Set focus to the input field
+}
 
     function B() {
-      var y = document.getElementById("display").value;
-      document.getElementById("display").value = y.slice(0, y.length - 1);
-    }
+  var display = document.getElementById("display");
+  var y = display.value;
+  display.value = y.slice(0, y.length - 1);
+  display.focus(); // Set focus to the input field
+}
 
     function res() {
       var input = document.getElementById("display").value;
@@ -129,6 +140,17 @@
       result = (1 - result) * 100;
       result = result.toFixed(2) + "%";
       document.getElementById("display").value = result;
+    }
+
+    function handleKeyPress(event) {
+      const keyPressed = event.key;
+      if (keyPressed === ' ') {
+        event.preventDefault(); // Prevent default behavior of spacebar
+        fun('+'); // Call your function for the plus sign
+      } else if (keyPressed === '=' || keyPressed === 'Enter') {
+        event.preventDefault(); // Prevent default behavior of "=" or "Enter" keys
+        res(); // Call the calculate function
+      }
     }
   </script>
 </body>
